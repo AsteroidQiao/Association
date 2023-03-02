@@ -68,7 +68,7 @@ export default {
 }
 
 .dropdown {
-  width: 200px;
+  width: 180px;
   margin-top: -80px;
   margin-left: 86%;
 }

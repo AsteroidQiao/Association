@@ -9,7 +9,7 @@
     </div>
     <el-input
         style="width: 280px"
-        placeholder="请输入商品名称"
+        placeholder="请输入活动名称"
         suffix-icon="el-icon-search"
         v-model="name"
     ></el-input>
@@ -59,9 +59,9 @@ export default {
   data() {
     return {
       imgs: [
-        'https://gdp.alicdn.com/imgextra/i1/2200674901717/O1CN01Ac09211OYQjQOEwl4_!!2200674901717.jpg',
-        'https://gdp.alicdn.com/imgextra/i2/2200674901717/O1CN01xXFFT61OYQjR09zZ4_!!2200674901717.jpg',
-        'https://gdp.alicdn.com/imgextra/i1/2200674901717/O1CN0104FXcx1OYQjYr8yxT_!!2200674901717.jpg '
+        'https://asteroidqiao.top/wp-content/uploads/2023/03/1.png',
+        'https://asteroidqiao.top/wp-content/uploads/2023/03/2.png',
+        'https://asteroidqiao.top/wp-content/uploads/2023/03/3.png'
       ],
       files: [],
       pageNum: 1,

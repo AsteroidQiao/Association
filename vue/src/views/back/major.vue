@@ -1,9 +1,8 @@
 <template>
   <div>
     <el-table :data="files"
-              row-key="mid"
               style="width: 100%"
-              :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+    >
       <el-table-column
           label="专业ID"
           prop="mid">
@@ -12,7 +11,8 @@
           label="绑定学院"
       >
         <template slot-scope="scope">
-          <el-select v-model="files[scope.$index].cname" filterable placeholder="请选择" :disabled="edit">
+          <el-select v-model="files[scope.$index].cname" filterable placeholder="请选择"
+                     :disabled="files[scope.$index].edit">
             <el-option
                 v-for="item in options"
                 :key="item.cname"
@@ -23,11 +23,30 @@
       </el-table-column>
       <el-table-column
           label="专业名称"
+          width="220"
       >
         <template slot-scope="scope">
-          <el-input v-model="files[scope.$index].major" :disabled="edit"></el-input>
+          <el-input v-model="files[scope.$index].major" :disabled="files[scope.$index].edit"></el-input>
         </template>
       </el-table-column>
+      <el-table-column
+          v-if="user.urole==='管理员'"
+          label="是否假删除"
+          align="center"
+      >
+        <template slot-scope="scope">
+          <el-switch
+              active-color="#13ce66"
+              v-model="files[scope.$index].isdelete"
+              :disabled="files[scope.$index].edit"
+              :active-value=1
+              :inactive-value=0
+          >
+          </el-switch>
+          <!--<el-input v-model="files[scope.$index].isdelete" :disabled="files[scope.$index].edit"></el-input>-->
+        </template>
+      </el-table-column>
+
       <el-table-column
           align="right">
         <template slot="header" slot-scope="scope">
@@ -38,7 +57,7 @@
                 suffix-icon="el-icon-search"
                 placeholder="输入关键字搜索"
                 @keyup.native.enter="load"
-                style="width: 180px"/>
+                style="width: 123px"/>
             <el-button type="primary" size="mini" @click="load">搜索</el-button>
             <el-button type="warning" size="mini" @click="reset">重置</el-button>
           </div>
@@ -64,7 +83,7 @@
             </el-button>
           </el-popconfirm>
           <el-button
-              v-if="edit"
+              v-if="files[scope.$index].edit"
               size="mini"
               icon="el-icon-edit"
               style="margin-left: 10px"
@@ -79,6 +98,7 @@
               @click="handleSave(scope.$index, scope.row)">保存
           </el-button>
           <el-button
+              v-if="files[scope.$index].edit"
               size="mini"
               type="primary"
               icon="el-icon-circle-plus-outline"
@@ -121,11 +141,17 @@ export default {
   },
 
   created() {
+    this.user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {}
     this.load()
   },
   methods: {
     load() {
-      axios.get("/major/page", {
+      if (this.user.urole === '管理员') {
+        this.url = 'pageAdmin'
+      } else if (this.user.urole === '教师') {
+        this.url = 'page'
+      }
+      axios.get("/major/" + this.url, {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
@@ -135,7 +161,8 @@ export default {
         this.files = res.data.data.records
         this.total = res.data.data.total
       })
-      axios.get('/college/').then((res => {
+      //所有角色只能选中未被假删除的学院
+      axios.get('/college/findAll').then((res => {
         this.options = res.data.data
       }))
     },
@@ -157,7 +184,7 @@ export default {
       // console.log(this.files)
     },
     handleSave(index, row) {
-      this.edit = true
+      row.edit = true
       //判断当前是否改变
       this.major.mid = row.mid
       this.major.cname = row.cname

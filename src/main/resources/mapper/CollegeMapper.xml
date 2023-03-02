@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiao.mapper.CollegeMapper">
+
+    <resultMap id="BaseResultMap" type="com.qiao.pojo.College">
+            <id property="cid" column="cid" jdbcType="INTEGER"/>
+            <result property="cname" column="cname" jdbcType="VARCHAR"/>
+            <result property="edit" column="edit" jdbcType="INTEGER"/>
+            <result property="isdelete" column="isdelete" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        cid,cname,edit,
+        isdelete
+    </sql>
+</mapper>

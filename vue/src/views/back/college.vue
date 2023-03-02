@@ -2,7 +2,7 @@
   <div>
     <el-table :data="files"
               style="width: 100%"
-              >
+    >
       <el-table-column
           label="学院ID"
           prop="cid">
@@ -11,7 +11,25 @@
           label="学院名称"
       >
         <template slot-scope="scope">
-          <el-input v-model="files[scope.$index].cname" :disabled="files[scope.$index].edit"></el-input>
+          <el-input v-model="files[scope.$index].cname" :disabled="files[scope.$index].edit"
+                    style="width: 200px"></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+          v-if="user.urole==='管理员'"
+          label="是否假删除"
+          align="center"
+      >
+        <template slot-scope="scope">
+          <el-switch
+              active-color="#13ce66"
+              v-model="files[scope.$index].isdelete"
+              :disabled="files[scope.$index].edit"
+              :active-value=1
+              :inactive-value=0
+          >
+          </el-switch>
+          <!--<el-input v-model="files[scope.$index].isdelete" :disabled="files[scope.$index].edit"></el-input>-->
         </template>
       </el-table-column>
       <el-table-column
@@ -24,7 +42,7 @@
                 suffix-icon="el-icon-search"
                 placeholder="输入关键字搜索"
                 @keyup.native.enter="load"
-                style="width: 180px"/>
+                style="width: 170px"/>
             <el-button type="primary" size="mini" @click="load">搜索</el-button>
             <el-button type="warning" size="mini" @click="reset">重置</el-button>
           </div>
@@ -112,7 +130,7 @@ export default {
     load() {
       if (this.user.urole === '管理员')
         this.url = 'pageAdmin'
-      else this.url = 'page'
+      else if (this.user.urole === '教师') this.url = 'page'
       axios.get("/college/" + this.url, {
         params: {
           pageNum: this.pageNum,
@@ -145,6 +163,7 @@ export default {
       //判断当前是否改变
       this.college.cid = row.cid
       this.college.cname = row.cname
+      this.college.isdelete = row.isdelete
       axios.post('/college', this.college).then((res => {
         if (res.data.code === 200) {
           this.$notify.success(res.data.msg)
@@ -152,6 +171,7 @@ export default {
           this.load()
         } else {
           this.$notify.warning(res.data.msg)
+          this.load()
         }
       }))
       //刷新页面 这个不好使
@@ -165,13 +185,13 @@ export default {
     },
     handleDelete(row) {
       if (this.user.urole === '管理员') {
-        axios.delete('/college/deleteAdmin' + row.cid).then((res => {
+        axios.delete('/college/deleteAdmin/' + row.cid).then((res => {
           if (res.data.code === 200) {
             this.$notify.success("删除成功")
             this.load()
           }
         }))
-      } else {
+      } else if(this.user.urole === '教师') {
         axios.delete('/college/' + row.cid).then((res => {
           if (res.data.code === 200) {
             this.$notify.success("删除成功")

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 @Data
 // 实体类与json互转的时候 属性值为null的不参与序列化
