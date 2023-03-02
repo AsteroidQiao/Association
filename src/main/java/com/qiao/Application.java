@@ -1,13 +1,15 @@
-package com.qiao.association;
+package com.qiao;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AssociationApplication {
+@MapperScan("com/qiao/mapper")
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(AssociationApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }
