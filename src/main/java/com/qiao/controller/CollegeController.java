@@ -7,7 +7,6 @@ import com.qiao.service.CollegeService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qiao.config.ResponseResult;
@@ -30,20 +29,21 @@ public class CollegeController {
     @Autowired
     private CollegeService collegeService;
 
-    // 新增或者更新
+    // 修改学院
     @PostMapping
     public ResponseResult save(@RequestBody College college) {
         //判断学院是否存在
         QueryWrapper<College> queryWrapper = new QueryWrapper<>();
-        //学院存在且没有被假删除
-        queryWrapper.eq("cname", college.getCname()).eq("isdelete", 0);
+        //学院存在
+        queryWrapper.eq("cname", college.getCname());
         College one = collegeService.getOne(queryWrapper);
         if (one != null)//学院存在发出警告
         {
             //学院存在就只能更新 isdelete状态 (这个搞了好久，烦死了，一直没想到另起一个)
             UpdateWrapper<College> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.set("isdelete", college.getIsdelete()).eq("cid", college.getCid());
-            collegeService.update(college, updateWrapper);
+            updateWrapper.eq("cid", college.getCid()).set("isdelete", college.getIsdelete());
+            college.setCname(one.getCname());
+            collegeService.update(updateWrapper);
             return ResponseResult.okResult(201, "警告该学院已存在！");
         } else {
             collegeService.saveOrUpdate(college);
@@ -53,10 +53,10 @@ public class CollegeController {
 
     // 新增
     @PostMapping("add")
-    public ResponseResult Add(@RequestParam String cname) {
-        College college = new College();
-        college.setCname(cname);
-        collegeService.save(college);
+    public ResponseResult Add(@RequestBody College college) {
+        //College one = new College();
+        //one.setCname(cname);
+        //collegeService.save(college);
         return ResponseResult.okResult(200, "操作成功");
     }
 

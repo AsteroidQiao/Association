@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
 * @author 25518
 * @description 针对表【college】的数据库操作Service实现
-* @createDate 2023-03-02 09:12:48
+* @createDate 2023-03-05 15:16:44
 */
 @Service
 public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College>

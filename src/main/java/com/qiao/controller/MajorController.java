@@ -36,14 +36,14 @@ public class MajorController {
     public ResponseResult save(@RequestBody Major major) {
         //判断专业是否存在
         QueryWrapper<Major> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("major", major.getMajor()).eq("cname", major.getCname()).eq("isdelete", 0);
+        queryWrapper.eq("major", major.getMajor()).eq("cname", major.getCname());
         Major one = majorService.getOne(queryWrapper);
         if (one != null)//专业存在发出警告
         {
             //学院存在就只能更新 isdelete状态
             UpdateWrapper<Major> updateWrapper = new UpdateWrapper<>();
             updateWrapper.set("isdelete", major.getIsdelete()).eq("mid", major.getMid());
-            majorService.update(major, updateWrapper);
+            majorService.update(updateWrapper);
             return ResponseResult.okResult(201, "警告该学院已存在此专业！");
         } else {
             majorService.saveOrUpdate(major);

@@ -160,20 +160,25 @@ export default {
     },
     handleSave(index, row) {
       row.edit = true
-      //判断当前是否改变
-      this.college.cid = row.cid
-      this.college.cname = row.cname
-      this.college.isdelete = row.isdelete
-      axios.post('/college', this.college).then((res => {
-        if (res.data.code === 200) {
-          this.$notify.success(res.data.msg)
-          //放前面试试 --可以
-          this.load()
-        } else {
-          this.$notify.warning(res.data.msg)
-          this.load()
-        }
-      }))
+      if (row.cname === "" || row.cname === null || row.cname === undefined) {
+        this.$notify.error('学院名称不能为空！')
+        this.load()
+      } else {
+        //判断当前是否改变
+        this.college.cid = row.cid
+        this.college.cname = row.cname
+        this.college.isdelete = row.isdelete
+        axios.post('/college', this.college).then((res => {
+          if (res.data.code === 200) {
+            this.$notify.success(res.data.msg)
+            //放前面试试 --可以
+            this.load()
+          } else {
+            this.$notify.warning(res.data.msg)
+            this.load()
+          }
+        }))
+      }
       //刷新页面 这个不好使
       // window.location.reload()
       //刷新页面 this.load()也不好使，可能是因为有axios，前面用这个还挺好使
@@ -191,7 +196,7 @@ export default {
             this.load()
           }
         }))
-      } else if(this.user.urole === '教师') {
+      } else if (this.user.urole === '教师') {
         axios.delete('/college/' + row.cid).then((res => {
           if (res.data.code === 200) {
             this.$notify.success("删除成功")

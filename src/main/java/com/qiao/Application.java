@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com/qiao/mapper")
-public class Application {
 
+public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

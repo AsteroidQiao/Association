@@ -15,10 +15,10 @@
         </div>
         <el-dropdown-menu slot="dropdown" style="width: 100px; text-align: center">
           <el-dropdown-item style="font-size: 14px; padding: 5px 0">
-            <el-link type="primary" :underline="false" href="/front/center/person">个人中心</el-link>
+            <el-link type="primary" :underline="false" href="/back/person">个人中心</el-link>
           </el-dropdown-item>
           <el-dropdown-item style="font-size: 14px; padding: 5px 0">
-            <el-link type="primary" :underline="false" href="/password">修改密码</el-link>
+            <el-link type="primary" :underline="false" href="/back/password">修改密码</el-link>
           </el-dropdown-item>
           <el-dropdown-item style="font-size: 14px; padding: 5px 0">
             <span style="text-decoration: none" @click="logout">退出</span>

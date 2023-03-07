@@ -5,10 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.qiao.config.ResponseResult;
 import com.qiao.pojo.Users;
 import com.qiao.service.UsersService;
+import com.qiao.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author AsteroidQiao
@@ -34,8 +33,9 @@ public class UsersController {
         usersQueryWrapper.eq("uaccount", uaccount).eq("upwd", upwd);
         Users one = service.getBaseMapper().selectOne(usersQueryWrapper);
         if (one != null) {
-            //String token = JWTUtils.setToken(one.getUid().toString(), upwd);
-            //one.setToken(token);
+            //用户登录时分配token
+            String token = JWTUtils.setToken(one.getUaccount(), upwd);
+            one.setToken(token);
             if (one.getUrole().equals(urole))
                 return ResponseResult.okResult(200, "登录成功，欢迎" + uaccount, one);
             else
@@ -78,6 +78,7 @@ public class UsersController {
 
     /**
      * 修改密码，检验用户传递旧密码来更改新密码
+     *
      * @param uaccount
      * @param oldpwd
      * @param newpwd
@@ -93,5 +94,11 @@ public class UsersController {
         } else {
             return ResponseResult.okResult(201, "修改失败，密码输入错误");
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseResult findById(@PathVariable Integer id) {
+        Users user = service.getById(id);
+        return ResponseResult.okResult(200, "查找成功", user);
     }
 }

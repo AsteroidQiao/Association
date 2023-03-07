@@ -185,18 +185,23 @@ export default {
     },
     handleSave(index, row) {
       row.edit = true
-      //判断当前是否改变
-      this.major.mid = row.mid
-      this.major.cname = row.cname
-      this.major.major = row.major
-      axios.post('/major', this.major).then((res => {
-        if (res.data.code === 200) {
-          this.$notify.success(res.data.msg)
-          this.load()
-        } else {
-          this.$notify.warning(res.data.msg)
-        }
-      }))
+      if (row.cname === "" || row.cname === null || row.cname === undefined) {
+        this.$notify.error('专业名称不能为空！')
+        this.load()
+      } else {
+        //判断当前是否改变
+        this.major.mid = row.mid
+        this.major.cname = row.cname
+        this.major.major = row.major
+        axios.post('/major', this.major).then((res => {
+          if (res.data.code === 200) {
+            this.$notify.success(res.data.msg)
+            this.load()
+          } else {
+            this.$notify.warning(res.data.msg)
+          }
+        }))
+      }
     },
     handleAdd() {
       this.files.push({})
@@ -206,10 +211,13 @@ export default {
       axios.delete('/major/' + row.mid).then((res => {
         if (res.data.code === 200) {
           this.$notify.success("删除成功")
+          this.load()
+        } else {
+          this.load()
         }
       }))
-      this.load()
-      this.load()
+
+
     },
     cancel(row) {
       console.log(row);

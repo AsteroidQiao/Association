@@ -4,15 +4,16 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
- * 
  * @TableName users
  */
-@TableName(value ="users")
+@TableName(value = "users")
 @Data
 public class Users implements Serializable {
     /**
@@ -45,6 +46,11 @@ public class Users implements Serializable {
      * 性别
      */
     private String gender;
+
+    /**
+     * 学分
+     */
+    private Integer credit;
 
     /**
      * 学号
@@ -94,7 +100,16 @@ public class Users implements Serializable {
     /**
      * 外键  专业ID
      */
+
     private String major;
+
+    /**
+     * 非数据库字段
+     * token
+     * 用于校验用户登录
+     */
+    @TableField(exist = false)
+    private String token;
 
     /**
      * 逻辑删除

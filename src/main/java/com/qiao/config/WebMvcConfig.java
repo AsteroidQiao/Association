@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     @Override
@@ -17,6 +19,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .allowedMethods("*")//"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"
                 .maxAge(3600);// 跨域允许时间，以秒为单位，3600=60*60，即一小时
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(jwtInterceptor()).addPathPatterns("/**")//拦截所有接口
+                .excludePathPatterns("/*/UserLogin","/*/UserRegister");//方行不需要拦截的
+
+    }
+
+    @Bean
+    public JWTInterceptor jwtInterceptor() {
+        return new JWTInterceptor();
     }
 
     @Bean

@@ -21,11 +21,6 @@ const routes = [
         name: '404',
         component: () => import('../views/404')
     },
-    {
-        path: '/password',   //修改密码
-        name: 'password',
-        component: () => import('../views/password')
-    },
 
 
     {
@@ -72,29 +67,44 @@ const routes = [
                 component: () => import('../views/back/home')
             },
             {
-                path: '/back/association',
+                path: '/back/association',//社团中心
                 name: 'association',
                 component: () => import('../views/back/association')
             },
             {
-                path: '/back/activity',
-                name: 'activity',
-                component: () => import('../views/back/activity')
-            },
-            {
-                path: '/back/addClub',
+                path: '/back/addClub',//添加社团
                 name: 'addClub',
                 component: () => import('../views/back/addClub')
             },
             {
-                path: '/back/college',
+                path: '/back/activity',//活动中心
+                name: 'activity',
+                component: () => import('../views/back/activity')
+            },
+            {
+                path: '/back/college',//学院中心
                 name: 'college',
                 component: () => import('../views/back/college')
             },
             {
-                path: '/back/major',
+                path: '/back/major',//专业中心
                 name: 'major',
                 component: () => import('../views/back/major')
+            },
+            {
+                path: '/back/person',   //个人中心
+                name: 'person',
+                component: () => import('../views/person')
+            },
+            {
+                path: '/back/password',   //修改密码
+                name: 'password',
+                component: () => import('../views/password')
+            },
+            {
+                path: '/back/role',   //修改密码
+                name: 'password',
+                component: () => import('../views/back/role')
             },
         ]
     },

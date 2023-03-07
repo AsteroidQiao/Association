@@ -70,7 +70,7 @@ export default {
   },
 
   created() {
-    axios.get('/college/').then((res => {
+    axios.get('/college/findAll').then((res => {
       this.options = res.data.data
     }))
   },

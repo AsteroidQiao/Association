@@ -8,10 +8,11 @@ import lombok.Getter;
 @Getter
 public class ServiceException extends RuntimeException {
     private int code;
+    private String message;
 
     public ServiceException(int code, String msg) {
-        super(msg);
         this.code = code;
+        this.message = msg;
     }
 
 }

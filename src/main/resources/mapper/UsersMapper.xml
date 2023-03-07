@@ -11,6 +11,7 @@
             <result property="upwd" column="upwd" jdbcType="VARCHAR"/>
             <result property="uname" column="uname" jdbcType="VARCHAR"/>
             <result property="gender" column="gender" jdbcType="VARCHAR"/>
+            <result property="credit" column="credit" jdbcType="INTEGER"/>
             <result property="num" column="num" jdbcType="VARCHAR"/>
             <result property="phone" column="phone" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
@@ -21,15 +22,15 @@
             <result property="url" column="url" jdbcType="VARCHAR"/>
             <result property="college" column="college" jdbcType="VARCHAR"/>
             <result property="major" column="major" jdbcType="VARCHAR"/>
-            <result property="isdelete" column="isdelete" jdbcType="INTEGER"/>
+            <result property="isdelete" column="isdelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         uid,urole,uaccount,
         upwd,uname,gender,
-        num,phone,email,
-        enrolltime,brithday,location,
-        sign,url,college,
-        major,isdelete
+        credit,num,phone,
+        email,enrolltime,brithday,
+        location,sign,url,
+        college,major,isdelete
     </sql>
 </mapper>

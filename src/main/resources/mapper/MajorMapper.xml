@@ -8,8 +8,8 @@
             <id property="mid" column="mid" jdbcType="INTEGER"/>
             <result property="cname" column="cname" jdbcType="VARCHAR"/>
             <result property="major" column="major" jdbcType="VARCHAR"/>
-            <result property="edit" column="edit" jdbcType="INTEGER"/>
-            <result property="isdelete" column="isdelete" jdbcType="INTEGER"/>
+            <result property="edit" column="edit" jdbcType="TINYINT"/>
+            <result property="isdelete" column="isdelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">

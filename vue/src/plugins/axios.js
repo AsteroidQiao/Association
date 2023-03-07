@@ -22,11 +22,10 @@ _axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
-    // let user = sessionStorage.getItem("store") ? JSON.parse(sessionStorage.getItem("store")) : null
-    // if (user) {
-    //   config.headers['token'] = user.admin.token;  // 设置请求头
-    //   //config.headers['token'] = user.token;  // 设置请求头
-    // }
+    let user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null
+    if (user) {
+      config.headers['token'] = user.token;  // 设置请求头
+    }
     return config;
   },
   function(error) {
@@ -39,6 +38,10 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
   function(response) {
     // Do something with response data
+      console.log(response.data)
+    //   if(response.code==="401"){
+    //       this.$notify.error(response.msg)
+    //   }
     return response;
   },
   function(error) {
