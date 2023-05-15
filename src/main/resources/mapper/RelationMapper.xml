@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiao.mapper.RelationMapper">
+
+    <resultMap id="BaseResultMap" type="com.qiao.pojo.Relation">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="uid" column="uid" jdbcType="INTEGER"/>
+            <result property="aid" column="aid" jdbcType="INTEGER"/>
+            <result property="jname" column="jname" jdbcType="VARCHAR"/>
+            <result property="isres" column="isres" jdbcType="INTEGER"/>
+            <result property="isdelete" column="isdelete" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uid,aid,
+        jname,isres,isdelete
+    </sql>
+</mapper>

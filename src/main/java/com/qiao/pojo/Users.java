@@ -100,21 +100,28 @@ public class Users implements Serializable {
     /**
      * 外键  专业ID
      */
-
     private String major;
-
-    /**
-     * 非数据库字段
-     * token
-     * 用于校验用户登录
-     */
-    @TableField(exist = false)
-    private String token;
 
     /**
      * 逻辑删除
      */
     private Integer isdelete;
+
+    /**
+     * 密保问题
+     */
+    private String issue;
+
+    /**
+     * 密保答案
+     */
+    private String answer;
+    /**
+     * 密保答案
+     */
+    @TableField(exist = false)
+
+    private String token;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

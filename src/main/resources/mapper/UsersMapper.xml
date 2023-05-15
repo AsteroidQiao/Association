@@ -23,6 +23,8 @@
             <result property="college" column="college" jdbcType="VARCHAR"/>
             <result property="major" column="major" jdbcType="VARCHAR"/>
             <result property="isdelete" column="isdelete" jdbcType="TINYINT"/>
+            <result property="issue" column="issue" jdbcType="VARCHAR"/>
+            <result property="answer" column="answer" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -31,6 +33,7 @@
         credit,num,phone,
         email,enrolltime,brithday,
         location,sign,url,
-        college,major,isdelete
+        college,major,isdelete,
+        issue,answer
     </sql>
 </mapper>

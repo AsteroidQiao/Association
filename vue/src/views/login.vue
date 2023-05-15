@@ -3,6 +3,7 @@
     <div class="login-form">
       <el-form :model="user" :rules="rules" ref="userForm">
         <h2>登录</h2>
+
         <el-form-item prop="username">
           <el-input size="medium" style="margin: 10px 0" placeholder="请输入用户名" prefix-icon="el-icon-user"
                     v-model="user.username"></el-input>
@@ -22,7 +23,7 @@
           <el-radio v-model="radio" label="管理员">管理员</el-radio>
         </el-form-item>
         <el-form-item style="margin: 10px ; text-align: right">
-          <el-link type="danger"  autocomplete="off" @click="forget(user.username)">忘记密码？点我重新设置密码</el-link>
+          <el-link type="danger" autocomplete="off" @click="forget(user.username)">忘记密码？点我重新设置密码</el-link>
         </el-form-item>
       </el-form>
     </div>
@@ -50,18 +51,24 @@ export default {
       }
     }
   },
-
+  mounted() {
+  },
   methods: {
     login() {
       this.$refs['userForm'].validate((valid) => {
         if (valid) {  // 表单校验合法
-          axios.post("/UserController/UserLogin?" + "uaccount=" + this.user.username + "&upwd=" + this.user.password+'&urole='+this.radio).then((res) => {
-            console.log(res.data.code)
+          axios.post("/UserController/UserLogin?uaccount=" + this.user.username + "&upwd=" + this.user.password + '&urole=' + this.radio).then((res) => {
+            axios.post("/setting/select").then(res => {
+              if (res.data.code === 200) {
+                localStorage.setItem('setting', JSON.stringify(res.data.data))
+                console.log(res.data.data)
+              }
+            })
             if (res.data.code === 200) {
               localStorage.setItem("user", JSON.stringify(res.data.data))  // 存储用户信息到浏览器
               this.$notify.success(res.data.msg)
-              if(res.data.data.urole==="学生")
-              this.$router.push("/front/home")
+              if (res.data.data.urole === "学生")
+                this.$router.push("/front/home")
               else
                 this.$router.push("/back/association")
             } else {

@@ -10,7 +10,7 @@
       </p>
       <!--如果是管理员或教师返回后台主界面-->
       <div v-if="user.urole==='管理员'||user.urole==='教师'">
-        <el-button type="primary" plain @click="$router.push('/back/home')">点击返回</el-button>
+        <el-button type="primary" plain @click="$router.push('/back/association')">点击返回</el-button>
       </div>
       <!--如果是游客或学生返回前台主界面-->
       <div v-else>

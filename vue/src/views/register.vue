@@ -14,6 +14,10 @@
           <el-input placeholder="请确认密码" size="medium" style="margin: 5px 0" prefix-icon="el-icon-lock" show-password
                     v-model="user.confirmPassword"></el-input>
         </el-form-item>
+      <el-form-item style="margin: 10px ; text-align: right">
+        <el-radio v-model="radio" label="学生">学生</el-radio>
+        <el-radio v-model="radio" label="教师">教师</el-radio>
+      </el-form-item>
         <el-form-item style="margin: 5px 0; text-align: right">
           <el-button type="primary" size="medium" autocomplete="off" @click="register()">注册</el-button>
           <el-button type="warning" size="medium" autocomplete="off" @click="$router.push('/login')">返回登录</el-button>
@@ -29,6 +33,7 @@ export default {
   data() {
     return {
       user: {},
+      radio: '学生',
       rules: {
         name: [
           {required: true, message: '请输入用户名', trigger: 'blur'},
@@ -54,9 +59,9 @@ export default {
             return false
           }
           console.log(this.user)
-          axios.post("/UserController/UserRegister?uaccount=" + this.user.name + "&upwd=" + this.user.password + "&uemail=" + this.user.email).then(res => {
+          axios.post("/UserController/UserRegister?uaccount=" + this.user.name + "&upwd=" + this.user.password + "&urole=" + this.radio).then(res => {
             if (res.data.code === 200) {
-              this.$message.success("注册成功")
+              this.$message.success(res.data.msg)
             } else {
               this.$message.error(res.data.msg)
             }

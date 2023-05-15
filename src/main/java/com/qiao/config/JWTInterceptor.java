@@ -36,7 +36,7 @@ public class JWTInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         // 如果token为空，禁止访问
         if (StrUtil.isBlank(token)) {
-            throw new ServiceException(401, "无token，请重新登录");
+            throw new ServiceException(HttpServletResponse.SC_UNAUTHORIZED, "无token，请重新登录");
         }
         // 如果不是映射到方法直接通过
         if (!(handler instanceof HandlerMethod)) {
@@ -54,7 +54,7 @@ public class JWTInterceptor implements HandlerInterceptor {
         usersQueryWrapper.eq("uaccount", uaccount);
         Users one = usersService.getOne(usersQueryWrapper);
         if (one == null) {
-            throw new ServiceException(HttpServletResponse.SC_NOT_FOUND, "用户不存在，请重新登录");
+            throw new ServiceException(HttpServletResponse.SC_UNAUTHORIZED, "用户不存在，请重新登录");
         }
         // sign验证（用户密码） token
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(one.getUpwd())).build();

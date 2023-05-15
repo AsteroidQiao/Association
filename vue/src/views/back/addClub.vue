@@ -4,27 +4,17 @@
       <el-form-item label="请输入社团名称" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="上传社团头像">
-      </el-form-item>
+      <el-form-item label="上传社团头像"></el-form-item>
       <el-upload
-          class="avatar-uploader"
-          :action="'http://' + serverIp +':9090/file/upload'"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :auto-upload="true"
-          :before-upload="beforeAvatarUpload"
-      >
+          class="avatar-uploader" :action="'http://' + serverIp +':9090/file/upload'" :show-file-list="false"
+          :on-success="handleAvatarSuccess" :auto-upload="true" :before-upload="beforeAvatarUpload">
         <img v-if="form.icon" :src="form.icon" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         <div slot="tip" class="el-upload__tip">上传jpg/png文件，大小不要超过10M</div>
       </el-upload>
       <el-form-item label="绑定学院" prop="college">
-        <el-select v-model="form.college" filterable placeholder="请选择" style="margin-left: -940px">
-          <el-option
-              v-for="item in options"
-              :key="item.cid"
-              :value="item.cname">
-          </el-option>
+        <el-select v-model="form.college" filterable placeholder="请选择" style="margin-left: -790px">
+          <el-option v-for="item in options" :key="item.cid" :value="item.cname"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="社团简介（200字以内）">
@@ -32,7 +22,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">立即创建</el-button>
-        <el-button>取消</el-button>
+        <el-button @click="form={}">清空表单</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -90,7 +80,6 @@ export default {
           return false;
         }
       });
-
     },
 
     handleAvatarSuccess(resp) {

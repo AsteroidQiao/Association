@@ -4,15 +4,23 @@
               style="width: 100%"
     >
       <el-table-column
-          label="专业ID"
-          prop="mid">
+          label="序号"
+          type=index
+      >
       </el-table-column>
+      <!--<el-table-column-->
+      <!--    label="专业ID"-->
+      <!--    align="center"-->
+      <!--    width="120"-->
+      <!--    prop="mid">-->
+      <!--</el-table-column>-->
       <el-table-column
           label="绑定学院"
+          align="center"
       >
         <template slot-scope="scope">
           <el-select v-model="files[scope.$index].cname" filterable placeholder="请选择"
-                     :disabled="files[scope.$index].edit">
+                     :disabled="files[scope.$index].edit?true:false">
             <el-option
                 v-for="item in options"
                 :key="item.cname"
@@ -23,10 +31,10 @@
       </el-table-column>
       <el-table-column
           label="专业名称"
-          width="220"
+          align="center"
       >
         <template slot-scope="scope">
-          <el-input v-model="files[scope.$index].major" :disabled="files[scope.$index].edit"></el-input>
+          <el-input v-model="files[scope.$index].major" :disabled="files[scope.$index].edit?true:false"></el-input>
         </template>
       </el-table-column>
       <el-table-column
@@ -38,7 +46,7 @@
           <el-switch
               active-color="#13ce66"
               v-model="files[scope.$index].isdelete"
-              :disabled="files[scope.$index].edit"
+              :disabled="files[scope.$index].edit?true:false"
               :active-value=1
               :inactive-value=0
           >
@@ -57,7 +65,7 @@
                 suffix-icon="el-icon-search"
                 placeholder="输入关键字搜索"
                 @keyup.native.enter="load"
-                style="width: 123px"/>
+                style="width: 120px"/>
             <el-button type="primary" size="mini" @click="load">搜索</el-button>
             <el-button type="warning" size="mini" @click="reset">重置</el-button>
           </div>
@@ -92,10 +100,9 @@
           <el-button
               v-else
               size="mini"
-              icon="el-icon-circle-check"
+              icon="el-icon-edit"
               style="margin-left: 10px"
-              type="success"
-              @click="handleSave(scope.$index, scope.row)">保存
+              @click="handleCancel(scope.$index, scope.row)">取消
           </el-button>
           <el-button
               v-if="files[scope.$index].edit"
@@ -103,6 +110,14 @@
               type="primary"
               icon="el-icon-circle-plus-outline"
               @click="handleAdd(scope.$index, scope.row)">新增
+          </el-button>
+          <el-button
+              v-else
+              size="mini"
+              icon="el-icon-circle-check"
+              style="margin-left: 10px"
+              type="success"
+              @click="handleSave(scope.$index, scope.row)">保存
           </el-button>
         </template>
       </el-table-column>
@@ -183,6 +198,19 @@ export default {
       // this.edit = false
       // console.log(this.files)
     },
+    handleCancel(index, row) {
+      // console.log(index)
+      // console.log(row)
+      // console.log(row.mid)
+      //新增时取消就刷新页面
+      if (row.mid === undefined)
+        this.load()
+      //正常取消改变编辑状态
+      else {
+        row.edit = true
+        this.load()
+      }
+    },
     handleSave(index, row) {
       row.edit = true
       if (row.cname === "" || row.cname === null || row.cname === undefined) {
@@ -193,6 +221,13 @@ export default {
         this.major.mid = row.mid
         this.major.cname = row.cname
         this.major.major = row.major
+        this.major.isdelete = row.isdelete
+        if (row.edit === true)
+          this.major.edit = 1
+        else
+          this.major.edit = 0
+        // console.log(row)
+        // console.log(this.major)
         axios.post('/major', this.major).then((res => {
           if (res.data.code === 200) {
             this.$notify.success(res.data.msg)
@@ -216,8 +251,6 @@ export default {
           this.load()
         }
       }))
-
-
     },
     cancel(row) {
       console.log(row);

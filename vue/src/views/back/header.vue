@@ -4,7 +4,7 @@
       <el-button type="primary" @click="$router.push('/front/home')">查看前台页面</el-button>
     </div>
     <div class="title">
-      <h2>Club后台管理界面</h2>
+      <h2>{{setting.title2}}</h2>
     </div>
     <div class="dropdown">
       <el-dropdown style="width: 150px; cursor: pointer; margin-right: 40px">
@@ -32,18 +32,19 @@
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+      isCollapse: false,
+      setting: localStorage.getItem("setting") ? JSON.parse(localStorage.getItem("setting")) : {},
+      user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
+    }
+  },
   methods: {
     logout() {
       this.$store.commit("logout");
       this.$message.success("退出成功");
     },
   },
-  data() {
-    return {
-      isCollapse: false,
-      user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
-    }
-  }
 }
 </script>
 
@@ -58,7 +59,6 @@ export default {
   position: relative;
   top: 10px;
   right: 5px;
-
 }
 .title{
   margin-top: -80px;

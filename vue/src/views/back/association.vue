@@ -11,13 +11,13 @@
     <el-button type="warning" @click="reset">重置</el-button>
 
     <div style="margin: 10px 0">
-      <el-row :gutter="10" >
+      <el-row :gutter="10">
         <el-col :span="12" v-for="item in files" :key="item.name" style="margin-bottom: 10px">
-          <div class="contain">
-            <img class="MyImg"  :src="item.icon" alt="图片暂时无法显示" >
+          <div class="contain" @click="toClub(item)">
+            <img class="MyImg" :src="item.icon" alt="图片暂时无法显示">
             <h2 class="name">{{ item.name }}</h2>
             <div class="position">
-            <span class="info">{{ item.info }}</span>
+              <span class="info">{{ item.info }}</span>
             </div>
           </div>
         </el-col>
@@ -78,6 +78,11 @@ export default {
     handleCurrentChange(pageNum) {
       this.pageNum = pageNum
       this.load()
+    },
+    toClub(club) {
+      localStorage.setItem("club", JSON.stringify(club))
+      console.log(club)
+      this.$router.push('/back/club/'+club.id)
     }
   },
 
@@ -86,7 +91,7 @@ export default {
 
 <style scoped>
 .contain {
-  width:630px;
+  width: 630px;
   height: 150px;
   overflow: hidden;
   border: 2px solid #8fb2c9;
@@ -106,16 +111,47 @@ export default {
 .MyImg:hover {
   transform: scale(1.1);
 }
-.name{
+.MyImg1 {
+  width: 100%;
+  height: 70px;
+  transition: all 0.6s;
+}
+
+.MyImg2 {
+  width: 100%;
+  height: 140px;
+  transition: all 0.6s;
+}
+
+.MyImg3 {
+  width: 100%;
+  height: 180px;
+  transition: all 0.6s;
+}
+
+.MyImg1:hover {
+  transform: scale(1.1);
+}
+
+.MyImg2:hover {
+  transform: scale(1.1);
+}
+
+.MyImg3:hover {
+  transform: scale(1.1);
+}
+.name {
 
 }
-.position{
+
+.position {
   width: 400px;
   margin-top: -20px;
   margin-left: 130px;
   text-align: left;
 }
-.info{
+
+.info {
   margin-left: 10px;
   text-align: left;
   color: gray;

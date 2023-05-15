@@ -5,24 +5,18 @@ import router, {resetRouter} from "@/router";
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  state: {
-    currentPathName: '',
-  },
-  mutations: {
-    setPath(state) {
-      state.currentPathName = localStorage.getItem("currentPathName")
+    state: {
     },
-    logout() {
-      // 清空缓存
-      localStorage.removeItem("user")
-      localStorage.removeItem("menus")
-      localStorage.removeItem("file")
-      router.push("/login")
-      // 重置路由
-      resetRouter()
-    }
-  },
-  getters: {}
+    mutations: {
+        logout() {
+            // 清空缓存
+            localStorage.removeItem("user")
+            router.push("/login")
+            // 重置路由
+            resetRouter()
+        },
+    },
+    getters: {}
 })
 
 export default store

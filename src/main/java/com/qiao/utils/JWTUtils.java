@@ -20,9 +20,9 @@ public class JWTUtils {
      * @return
      */
     public static String setToken(String name, String sign) {
-        return JWT.create().withAudience(name).//用户名设置
+        return JWT.create().withAudience(name).//载荷用户=>用户名
                 withExpiresAt(DateUtil.offsetHour(new Date(), 2)).
-                sign(Algorithm.HMAC256(sign));//用 用户密码加签
+                sign(Algorithm.HMAC256(sign));//加签认证=>用户密码
     }
     /**
      * 解析token

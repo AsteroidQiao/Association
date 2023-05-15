@@ -24,12 +24,12 @@ import java.util.List;
 @RequestMapping("/file")
 public class FileController {
     //定义上传地址
-//    123.60.85.87      华为云
+//    43.143.181.46      腾讯云
 //    127.0.0.1         本地
     private String fileUploadPath = "D:/load/";
-    //    private String fileUploadPath = "/www/wwwroot/load/";
-    //@Autowired
-    //private StringRedisTemplate stringRedisTemplate;
+//    private String fileUploadPath = "/www/wwwroot/club/load";
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     private FilesServiceImpl filesService;
@@ -39,17 +39,14 @@ public class FileController {
         String originalFilename = file.getOriginalFilename();
         String type = FileUtil.extName(originalFilename);
         long size = file.getSize();
-
         // 定义一个文件唯一的标识码
         String fileUUID = IdUtil.fastSimpleUUID() + StrUtil.DOT + type;
-
         File uploadFile = new File(fileUploadPath + fileUUID);
         // 判断配置的文件目录是否存在，若不存在则创建一个新的文件目录
         File parentFile = uploadFile.getParentFile();
         if (!parentFile.exists()) {
             parentFile.mkdirs();
         }
-
         String url;
         // 获取文件的md5(加密的唯一标识)
         String md5 = SecureUtil.md5(file.getInputStream());
@@ -62,10 +59,9 @@ public class FileController {
             // 数据库若不存在重复文件，上传文件到磁盘
             file.transferTo(uploadFile);
             // 生成url
-//            url = "http://123.60.85.87:9090/file/" + fileUUID;
+            //url = "http://43.143.181.46:9090/file/" + fileUUID;
             url = "http://127.0.0.1:9090/file/" + fileUUID;
         }
-
         // 存储数据库，数据库允许有重复文件
         Files saveFile = new Files();
         saveFile.setName(originalFilename);
@@ -74,10 +70,6 @@ public class FileController {
         saveFile.setUrl(url);
         saveFile.setMd5(md5);
         filesService.getBaseMapper().insert(saveFile);
-
-        //// 更新之后清空缓存
-        //delCache("Test");
-
         return url;
     }
 
