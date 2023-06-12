@@ -11,7 +11,7 @@
           <el-col :span="12">
             <el-form-item label="主办方" prop="association">
               <el-select v-model="form.association" filterable placeholder="请选择"
-                         style="margin-left: -190px" @click.native="clubChange">
+                         style="margin-left: -260px" @click.native="clubChange">
                 <el-option
                     v-for="item in association"
                     :key="item.name"

@@ -13,7 +13,7 @@
         <div slot="tip" class="el-upload__tip">上传jpg/png文件，大小不要超过10M</div>
       </el-upload>
       <el-form-item label="绑定学院" prop="college">
-        <el-select v-model="form.college" filterable placeholder="请选择" style="margin-left: -790px">
+        <el-select v-model="form.college" filterable placeholder="请选择" style="margin-left: -940px">
           <el-option v-for="item in options" :key="item.cid" :value="item.cname"></el-option>
         </el-select>
       </el-form-item>

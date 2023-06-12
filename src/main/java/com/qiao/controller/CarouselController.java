@@ -41,7 +41,17 @@ public class CarouselController {
     public ResponseResult add(@RequestBody Carousel carousel) {
         carouselService.save(carousel);
         return ResponseResult.okResult(200, "添加成功");
-
+    }
+    // 新增或者更新
+    @PostMapping("/add")
+    public ResponseResult add(Integer id,String url,String route,String info) {
+        Carousel carousel=new Carousel();
+        carousel.setId(id);
+        carousel.setUrl(url);
+        carousel.setRoute(route);
+        carousel.setInfo(info);
+        carouselService.save(carousel);
+        return ResponseResult.okResult(200, "添加成功");
     }
 
     //完全删除

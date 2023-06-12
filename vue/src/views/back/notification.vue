@@ -1,7 +1,7 @@
 <template>
   <el-form ref="form" :model="form" :rules="rules" label-width="130px" label-position="left">
     <el-form-item label="请选择通知对象" prop="uid">
-      <el-select v-model="form.uid" filterable placeholder="请选择" style="margin-left: -800px">
+      <el-select v-model="form.uid" filterable placeholder="请选择" style="margin-left: -940px">
         <el-option v-for="item in users" :key="item.uid" :label="item.uaccount" :value="item.uid"></el-option>
       </el-select>
     </el-form-item>
@@ -12,7 +12,7 @@
       <el-input type="textarea" :rows="4" v-model="form.msg"></el-input>
     </el-form-item>
     <el-form-item label="通知类型" prop="type">
-      <el-select v-model="form.type" filterable placeholder="请选择" style="margin-left: -800px">
+      <el-select v-model="form.type" filterable placeholder="请选择" style="margin-left: -940px">
         <el-option v-for="item in options" :key="item.label" :value="item.value"></el-option>
       </el-select>
     </el-form-item>

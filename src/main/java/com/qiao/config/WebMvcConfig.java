@@ -18,14 +18,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOriginPatterns("*")//所有地址都可以访问，也可以配置具体地址
                 .allowCredentials(true)
                 .allowedMethods("*")//"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"
-                .maxAge(3600*24);// 跨域允许时间，以秒为单位，3600=60*60*24，即一小时
+                .maxAge(3600 * 24);// 跨域允许时间，以秒为单位，3600=60*60*24，即一小时
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor()).addPathPatterns("/**")//拦截所有接口
-                .excludePathPatterns("/UserController/UserLogin","/UserController/UserRegister",
-                        "/UserController/UserUpdatepwd","/UserController/UserUpdatepwd2", "/UserController/UserForget","/file/*");//放行不需要拦截的
+                .excludePathPatterns("/UserController/UserLogin", "/UserController/UserRegister", "/UserController/UserUpdatepwd", "/UserController/UserUpdatepwd2", "/UserController/UserForget", "/file/*")//放行不需要拦截的
+                .excludePathPatterns("/swagger-resources/**","/swagger-ui/**", "/v3/**", "/error") //放行swagger
+                .excludePathPatterns("/doc.html**");
 
     }
 
