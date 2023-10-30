@@ -21,7 +21,7 @@
         </el-submenu>
         <el-submenu index="/back/association">
           <template slot="title">
-            <i class="el-icon-pie-chart"></i>
+            <i class="el-icon-position"></i>
             <span>社团管理</span>
           </template>
           <el-menu-item-group>
@@ -37,6 +37,16 @@
           <el-menu-item-group>
             <el-menu-item index="/back/activity">活动中心</el-menu-item>
             <el-menu-item index="/back/addActivity">发布活动</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="/back/userChart">
+          <template slot="title">
+            <i class="el-icon-pie-chart"></i>
+            <span>数据报表</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="/back/userChart">用户注册</el-menu-item>
+            <!--<el-menu-item index="/back/addActivity">发布活动</el-menu-item>-->
           </el-menu-item-group>
         </el-submenu>
         <el-menu-item v-if="user.urole==='管理员'" index="/back/role">

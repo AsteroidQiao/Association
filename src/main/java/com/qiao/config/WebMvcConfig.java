@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor()).addPathPatterns("/**")//拦截所有接口
-                .excludePathPatterns("/UserController/UserLogin", "/UserController/UserRegister", "/UserController/UserUpdatepwd", "/UserController/UserUpdatepwd2", "/UserController/UserForget", "/file/*")//放行不需要拦截的
+                .excludePathPatterns("/UserController/UserLogin", "/UserController/UserRegister", "/UserController/UserUpdatepwd", "/UserController/UserUpdatepwd2", "/UserController/UserForget", "/file/*", "/gitee/*")//放行不需要拦截的
                 .excludePathPatterns("/swagger-resources/**","/swagger-ui/**", "/v3/**", "/error") //放行swagger
                 .excludePathPatterns("/doc.html**");
 

@@ -23,7 +23,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="组织者" prop="organizer" @click.native="selectRes" style="margin-left: -100px">
+            <el-form-item label="组织者" prop="organizers" @click.native="selectRes" style="margin-left: -100px">
               <el-popover
                   placement="center"
                   v-model="visible"
@@ -122,7 +122,7 @@
       <el-upload
           multiple
           :limit="5"
-          :action="'http://'+  serverIp+':9090/file/upload'"
+          :action="'http://'+  serverIp +':9090/gitee/upload'"
           list-type="picture-card"
           :file-list="imgs"
           :show-file-list="true"
@@ -245,7 +245,7 @@ export default {
         association: [
           {required: true, message: '请输入主办方名称', trigger: 'blur'},
         ],
-        organizer: [
+        organizers: [
           {required: true, message: '请选择组织者', trigger: 'blur'},
         ],
         name: [
@@ -496,12 +496,13 @@ export default {
       // console.log(res)
       // console.log(file)
       // console.log(fileList)
+      file.url = file.response.data
       this.fileList.push(file)
       // console.log(this.fileList)
     },
     //预览
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.response;
+      this.dialogImageUrl = file.response.data;
       this.dialogVisible = true;
     },
     //选择负责人改变触发

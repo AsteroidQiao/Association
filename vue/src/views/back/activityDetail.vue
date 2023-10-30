@@ -7,7 +7,7 @@
           <el-col :span="12">
             <el-form-item label="主办方" prop="association">
               <el-select v-model="form.association" filterable placeholder="请选择"
-                         style="margin-left: -190px" @click.native="clubChange">
+                         style="margin-left: -252px" @click.native="clubChange">
                 <el-option
                     v-for="item in association"
                     :key="item.name"
@@ -57,7 +57,7 @@
                     value-format="yyyy-MM-dd HH:mm:ss"
                     placeholder="选择开始时间"
                     default-time="12:00:00"
-                    style="margin-left: -150px"
+                    style="margin-left: -210px"
                 >
                 </el-date-picker>
               </div>
@@ -87,7 +87,7 @@
                     value-format="yyyy-MM-dd HH:mm:ss"
                     placeholder="选择开始时间"
                     default-time="12:00:00"
-                    style="margin-left: -150px">
+                    style="margin-left: -210px">
                 </el-date-picker>
               </div>
             </el-form-item>
@@ -113,7 +113,7 @@
       <el-upload
           multiple
           :limit="5"
-          :action="'http://'+  serverIp+':9090/file/upload'"
+          :action="'http://' + serverIp +':9090/gitee/upload'"
           list-type="picture-card"
           :file-list="imgs"
           :show-file-list="true"
@@ -513,17 +513,18 @@ export default {
     },
     //照片上传成功
     handleSuccess(res, file, fileList) {
-      // console.log(res)
-      console.log(file)
+      // console.log("res",res)
+      // console.log("file",file)
       // console.log(fileList)
       if (file.response !== undefined)
-        file.url = file.response
+        file.url = file.response.data
       this.imgs.push(file)
       console.log(this.imgs)
     },
     //预览
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
+      console.log("file",file)
       this.dialogVisible = true;
     },
     //选择负责人改变触发

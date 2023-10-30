@@ -26,8 +26,10 @@ public class FileController {
     //定义上传地址
 //    43.143.181.46      腾讯云
 //    127.0.0.1         本地
-    private String fileUploadPath = "D:/load/";
-//    private String fileUploadPath = "/www/wwwroot/club/load";
+//    private String fileUploadPath = "D:/load/";
+    private String host = "127.0.0.1";
+    //private String host = "43.143.181.46";
+    private String fileUploadPath = "/www/wwwroot/club/load";
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -59,8 +61,8 @@ public class FileController {
             // 数据库若不存在重复文件，上传文件到磁盘
             file.transferTo(uploadFile);
             // 生成url
-            //url = "http://43.143.181.46:9090/file/" + fileUUID;
-            url = "http://127.0.0.1:9090/file/" + fileUUID;
+            url = "http://"+ host +":9090/file/" + fileUUID;
+            //url = "http://127.0.0.1:9090/file/" + fileUUID;
         }
         // 存储数据库，数据库允许有重复文件
         Files saveFile = new Files();

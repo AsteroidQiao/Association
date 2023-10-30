@@ -6,7 +6,7 @@
       </el-form-item>
       <el-form-item label="上传社团头像"></el-form-item>
       <el-upload
-          class="avatar-uploader" :action="'http://' + serverIp +':9090/file/upload'" :show-file-list="false"
+          class="avatar-uploader" :action="'http://' + serverIp +':9090/gitee/upload'" :show-file-list="false"
           :on-success="handleAvatarSuccess" :auto-upload="true" :before-upload="beforeAvatarUpload">
         <img v-if="form.icon" :src="form.icon" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -83,7 +83,7 @@ export default {
     },
 
     handleAvatarSuccess(resp) {
-      this.form.icon = resp
+      this.form.icon = resp.data
     },
     beforeAvatarUpload(file) {
       const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';

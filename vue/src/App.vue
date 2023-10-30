@@ -23,6 +23,27 @@
   };
 })();</script>
 
+<script>
+import ScaleBox from "vue2-scale-box";
+
+export default {
+  components: { ScaleBox },
+};
+</script>
+
+
+
+<!--<script>-->
+<!--import devPixelRatio from "../public/devicePixelRatio.js";-->
+
+<!--export default {-->
+<!--created() {-->
+<!--new devPixelRatio().init(); // 初始化页面比例-->
+<!--},-->
+<!--};-->
+<!--</script>-->
+
+
 <style>
 body {
   margin: 0;

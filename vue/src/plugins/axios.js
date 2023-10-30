@@ -27,6 +27,7 @@ _axios.interceptors.request.use(
         let user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null
         if (user) {
             config.headers['token'] = user.token;  // 设置请求头token
+            // config.headers['referer'] = 'https://gitee.com';  // 设置请求头token
         }
         return config;
     },

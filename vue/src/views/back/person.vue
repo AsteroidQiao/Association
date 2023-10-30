@@ -3,7 +3,7 @@
     <el-form label-width="80px" size="small">
       <el-upload
           class="avatar-uploader"
-          :action="'http://' + serverIp +':9090/file/upload'"
+          :action="'http://' + serverIp +':9090/gitee/upload'"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
@@ -143,7 +143,7 @@ export default {
       })
     },
     handleAvatarSuccess(resp) {
-      this.form.url = resp
+      this.form.url = resp.data
     },
     beforeAvatarUpload(file) {
       const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';

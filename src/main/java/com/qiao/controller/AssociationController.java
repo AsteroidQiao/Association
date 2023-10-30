@@ -1,6 +1,9 @@
 package com.qiao.controller;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.qiao.pojo.Activity;
 import com.qiao.pojo.Association;
@@ -8,6 +11,8 @@ import com.qiao.pojo.Relation;
 import com.qiao.service.AssociationService;
 import com.qiao.service.RelationService;
 import com.qiao.service.UsersService;
+import org.apache.poi.util.StringUtil;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,11 +45,15 @@ public class AssociationController {
     private UsersService usersService;
     @Autowired
     private AssociationService associationService;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     // 新增或者更新
     @PostMapping("/save")
     public ResponseResult save(@RequestBody Association association) {
         associationService.saveOrUpdate(association);
+        //修改=>刷新缓存
+        flushRedis("associationRedis");
         return ResponseResult.okResult();
     }
 
@@ -65,6 +74,8 @@ public class AssociationController {
             association.setIcon(icon);
             association.setCollege(college);
             associationService.save(association);
+            //新增=>刷新缓存
+            flushRedis("associationRedis");
             return ResponseResult.okResult(200, "添加成功");
         }
     }
@@ -73,12 +84,16 @@ public class AssociationController {
     @DeleteMapping("/{id}")
     public ResponseResult delete(@PathVariable Integer id) {
         associationService.removeById(id);
+        //删除时=>刷新缓存
+        flushRedis("associationRedis");
         return ResponseResult.okResult();
     }
 
     @PostMapping("/del/batch")
     public ResponseResult deleteBatch(@RequestBody List<Integer> ids) {
         associationService.removeByIds(ids);
+        //删除时=>刷新缓存
+        flushRedis("associationRedis");
         return ResponseResult.okResult();
     }
 
@@ -89,12 +104,26 @@ public class AssociationController {
 
     @GetMapping("/findHot")
     public ResponseResult findHot() {
-        QueryWrapper<Association> QueryWrapper = new QueryWrapper<>();
-        //活动排名靠前的5个部落
-        QueryWrapper.between("id", 1, 6);
+        // 1. 从缓存获取数据
+        String jsonStr = stringRedisTemplate.opsForValue().get("associationRedis");
+        List<Association> associationRedis;
+        if (StrUtil.isBlank(jsonStr)) { // 2. 取出来的json是空的
+            QueryWrapper<Association> QueryWrapper = new QueryWrapper<>();
+            //推荐部落
+            // 活动排名靠前的6个部落
+            QueryWrapper.between("id", 1, 6);
+            associationRedis = associationService.list(QueryWrapper);// 3. 从数据库取出数据
+            // 4. 再去缓存到redis
+            stringRedisTemplate.opsForValue().set("associationRedis", JSONUtil.toJsonStr(associationRedis));
+        }
+        else {
+            associationRedis=JSONUtil.toBean(jsonStr, new TypeReference<List<Association>>() {
+            }, true);
+        }
+
         //活动已通过
         //QueryWrapper.eq("isdelete", 0);
-        return ResponseResult.okResult(associationService.list(QueryWrapper));
+        return ResponseResult.okResult(associationRedis);
     }
 
     @GetMapping("/id")
@@ -161,5 +190,9 @@ public class AssociationController {
         }
     }
 
+    // 删除缓存
+    private void flushRedis(String key) {
+        stringRedisTemplate.delete(key);
+    }
 }
 

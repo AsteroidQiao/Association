@@ -121,7 +121,7 @@
       <el-upload
           multiple
           :limit="5"
-          :action="'http://'+  serverIp+':9090/file/upload'"
+          :action="'http://'+  serverIp+':9090/gitee/upload'"
           list-type="picture-card"
           :file-list="imgs"
           :show-file-list="true"
@@ -486,14 +486,16 @@ export default {
     //照片上传成功
     handleSuccess(res, file, fileList) {
       // console.log(res)
-      // console.log(file)
+      // console.log("file",file)
       // console.log(fileList)
+      file.url = file.response.data
       this.fileList.push(file)
+      // console.log("file2",file)
       // console.log(this.fileList)
     },
     //预览
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.response;
+      this.dialogImageUrl = file.response.data;
       this.dialogVisible = true;
     },
     //选择负责人改变触发

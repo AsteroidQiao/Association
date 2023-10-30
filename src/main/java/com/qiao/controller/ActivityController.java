@@ -1,6 +1,9 @@
 package com.qiao.controller;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.qiao.pojo.Enroll;
@@ -8,6 +11,7 @@ import com.qiao.service.ActivityService;
 import com.qiao.service.EnrollService;
 import com.qiao.service.UsersService;
 import lombok.Data;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,6 +46,9 @@ public class ActivityController {
     @Autowired
     private EnrollService enrollService;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     // 新增活动
     @PostMapping("/add")
     public ResponseResult save(@RequestBody Activity activity) {
@@ -57,6 +64,8 @@ public class ActivityController {
             //    activity.setPass(1);
             //}
             activityService.save(activity);
+            //新增=>刷新缓存
+            flushRedis("activityRedis");
             return ResponseResult.okResult(200, "添加成功!", activityService.getOne(activityQueryWrapper));
         }
     }
@@ -65,12 +74,16 @@ public class ActivityController {
     @PostMapping("/update")
     public ResponseResult update(@RequestBody Activity activity) {
         activityService.saveOrUpdate(activity);
+        //修改=>刷新缓存
+        flushRedis("activityRedis");
         return ResponseResult.okResult(200, "修改成功!");
     }
 
     //完全删除
     @DeleteMapping("/{id}")
     public ResponseResult deleteAdmin(@PathVariable Integer id) {
+        //删除时=>刷新缓存
+        flushRedis("activityRedis");
         activityService.removeById(id);
         return ResponseResult.okResult();
     }
@@ -78,6 +91,8 @@ public class ActivityController {
     //逻辑删除 (假删除)
     @DeleteMapping("/del/{id}")
     public ResponseResult delete(@PathVariable Integer id) {
+        //删除时=>刷新缓存
+        flushRedis("activityRedis");
         UpdateWrapper<Activity> UpdateWrapper = new UpdateWrapper<>();
         UpdateWrapper.set("isdelete", 1).eq("id", id);
         activityService.update(UpdateWrapper);
@@ -87,6 +102,8 @@ public class ActivityController {
     //批量删除
     @PostMapping("/del/batch")
     public ResponseResult deleteBatch(@RequestBody List<Integer> ids) {
+        //删除时=>刷新缓存
+        flushRedis("activityRedis");
         activityService.removeByIds(ids);
         return ResponseResult.okResult();
     }
@@ -108,17 +125,35 @@ public class ActivityController {
     //查询热门活动
     @GetMapping("/findHot")
     public ResponseResult findHot() {
-        QueryWrapper<Activity> QueryWrapper = new QueryWrapper<>();
-        //近期活动
-        Date now = DateUtil.date();
-        // 获取当前时间
-        System.out.println(now);
-        QueryWrapper.gt("endtime", now);// 查询活动结束时间大于当前时间
-        //活动排名靠前的12个活动
-        QueryWrapper.between("acid", 1, 12);
-        //活动已通过
-        QueryWrapper.eq("isdelete", 0);
-        return ResponseResult.okResult(activityService.list(QueryWrapper));
+
+        // 1. 从缓存获取数据
+        String jsonStr = stringRedisTemplate.opsForValue().get("activityRedis");
+
+        List<Activity> activityRedis;
+        if (StrUtil.isBlank(jsonStr)) {  // 2. 取出来的json是空的
+            QueryWrapper<Activity> QueryWrapper = new QueryWrapper<>();
+            //近期活动
+            Date now = DateUtil.date();
+            //// 获取当前时间
+            //System.out.println(now);
+            QueryWrapper.gt("endtime", now);// 查询活动结束时间大于当前时间
+            //推荐活动
+            //活动排名靠前的12个活动
+            QueryWrapper.between("acid", 1, 12);
+            //活动已通过
+            QueryWrapper.eq("isdelete", 0);
+            activityRedis = activityService.list(QueryWrapper);// 3. 从数据库取出数据
+            // 4. 再去缓存到redis
+            stringRedisTemplate.opsForValue().set("activityRedis", JSONUtil.toJsonStr(activityRedis));
+        } else {
+            // 减轻数据库的压力
+            // 5. 如果有, 从redis缓存中获取数据
+            activityRedis = JSONUtil.toBean(jsonStr, new TypeReference<List<Activity>>() {
+            }, true);
+        }
+
+
+        return ResponseResult.okResult(activityRedis);
     }
 
     //查询社团下所有活动
@@ -192,5 +227,9 @@ public class ActivityController {
         return ResponseResult.okResult(activityService.page(new Page<>(pageNum, pageSize), queryWrapper));
     }
 
+    // 删除缓存
+    private void flushRedis(String key) {
+        stringRedisTemplate.delete(key);
+    }
 }
 

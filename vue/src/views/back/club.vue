@@ -25,14 +25,14 @@
       </el-form-item>
       <el-form-item label="社团头像"></el-form-item>
       <el-upload
-          class="avatar-uploader" :action="'http://' + serverIp +':9090/file/upload'" :show-file-list="false"
+          class="avatar-uploader" :action="'http://' + serverIp +':9090/gitee/upload'" :show-file-list="false"
           :on-success="handleAvatarSuccess" :auto-upload="true" :before-upload="beforeAvatarUpload">
         <img v-if="form.icon" :src="form.icon" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         <div slot="tip" class="el-upload__tip">上传jpg/png文件，大小不要超过10M</div>
       </el-upload>
       <el-form-item label="绑定学院" prop="college">
-        <el-select v-model="form.college" filterable placeholder="请选择" style="margin-left: -790px">
+        <el-select v-model="form.college" filterable placeholder="请选择" style="margin-left: -925px">
           <el-option v-for="item in options" :key="item.cid" :value="item.cname"></el-option>
         </el-select>
       </el-form-item>
@@ -112,7 +112,7 @@ export default {
       this.$router.push('/back/manage/' + this.form.id)
     },
     handleAvatarSuccess(resp) {
-      this.form.icon = resp
+      this.form.icon = resp.data
     },
     beforeAvatarUpload(file) {
       const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';

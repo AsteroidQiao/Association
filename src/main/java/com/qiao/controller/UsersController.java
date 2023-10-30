@@ -1,12 +1,11 @@
 package com.qiao.controller;
 
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.qiao.config.ResponseResult;
-import com.qiao.pojo.Major;
-import com.qiao.pojo.Relation;
 import com.qiao.pojo.Users;
 import com.qiao.service.UsersService;
 import com.qiao.utils.JWTUtils;
@@ -69,9 +68,10 @@ public class UsersController {
             user.setUaccount(uaccount);//用户账号名，不可修改，不可重复
             user.setUname(uaccount);//用户名，先设置uname和uaccount一致，用于之后可以修改
             user.setUpwd(upwd);//用户密码
-            user.setUrl("http://127.0.0.1:9090/file/cec51ce1bbf34d4b9db1883e8131ceef.png");//默认头像
+            user.setEnrolltime(DateUtil.date());//用户注册时间 为当前
+            //user.setUrl("http://127.0.0.1:9090/file/cec51ce1bbf34d4b9db1883e8131ceef.png");//默认头像
             //腾讯云
-            //user.setUrl("http://43.143.181.46:9090/file/cec51ce1bbf34d4b9db1883e8131ceef.png");//默认头像
+            user.setUrl("https://images.cnblogs.com/cnblogs_com/blogs/796288/galleries/2319977/o_230620090846_%E6%88%90%E5%A4%A7%E4%BA%8B.jpg");//默认头像
             if (Objects.equals(urole, "学生")) {
                 user.setUrole(urole);//学生注册
                 service.getBaseMapper().insert(user);
@@ -109,7 +109,7 @@ public class UsersController {
     }
 
     @PostMapping("/UserUpdatepwd2")
-    //忘记密码修改密码
+    //忘记密码修改密码=>不知道旧密码
     public ResponseResult UserUpdatepwd(String uaccount, String newpwd) {
         UpdateWrapper<Users> updatepwdWrapper = new UpdateWrapper<>();
         updatepwdWrapper.eq("uaccount", uaccount).set("upwd", newpwd);

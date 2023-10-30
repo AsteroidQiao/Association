@@ -28,4 +28,9 @@
         pass,reason,isdelete,
         url,route
     </sql>
+    <select id="selectAcidByInfo" resultMap="BaseResultMap">
+        select acid
+        from activity
+        where info = #{info,jdbcType=VARCHAR}
+    </select>
 </mapper>

@@ -159,6 +159,11 @@ const routes = [
                 component: () => import('../views/back/addClub')
             },
             {
+                path: '/back/userChart',//用户报表
+                name: 'backUserChart',
+                component: () => import('../views/back/userChart')
+            },
+            {
                 path: '/back/activity',//活动中心
                 name: 'backActivity',
                 component: () => import('../views/back/activity')

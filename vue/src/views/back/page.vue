@@ -60,7 +60,7 @@
         <el-col :span="12">
           <el-form-item label="平台图标"></el-form-item>
           <el-upload
-              class="avatar-uploader" :action="'http://' + serverIp +':9090/file/upload'" :show-file-list="false"
+              class="avatar-uploader" :action="'http://' + serverIp +':9090/gitee/upload'" :show-file-list="false"
               :on-success="handleAvatarSuccess" :auto-upload="true" :before-upload="beforeAvatarUpload">
             <img v-if="form.icon" :src="form.icon" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -68,14 +68,11 @@
           </el-upload>
           <el-form-item label="首页布局" style="margin-top: 110px; text-align: left">
             <el-radio-group v-model="form.span" style="display: flex" >
-              <!--<el-image class="image" src="http://43.143.181.46:9090/file/3e8c90f613f74798ae475f5724a6d7f7.png" @click="form.span=8"></el-image>-->
-              <el-image class="image" src="http://127.0.0.1:9090/file/3e8c90f613f74798ae475f5724a6d7f7.png" @click="form.span=8"></el-image>
+              <!--<el-image class="image" src="" @click="form.span=8"></el-image>-->
               <el-radio :label="8" class="radio">三排</el-radio>
-              <!--<el-image class="image" src="http://43.143.181.46:9090/file/b9ea5169bb6442a49b5ff7ce1fb03fa2.png" @click="form.span=6"></el-image>-->
-              <el-image class="image" src="http://127.0.0.1:9090/file/b9ea5169bb6442a49b5ff7ce1fb03fa2.png" @click="form.span=6"></el-image>
+              <!--<el-image class="image" src="" @click="form.span=6"></el-image>-->
               <el-radio :label="6" class="radio">四排</el-radio>
-              <!--<el-image class="image" src="http://43.143.181.46:9090/file/396214cbd0df46b68f8bb2a5c8f28690.png" @click="form.span=4"></el-image>-->
-              <el-image class="image" src="http://127.0.0.1:9090/file/396214cbd0df46b68f8bb2a5c8f28690.png" @click="form.span=4"></el-image>
+              <!--<el-image class="image" src="" @click="form.span=4"></el-image>-->
               <el-radio :label="4" class="radio">六排</el-radio>
             </el-radio-group>
           </el-form-item>
@@ -121,7 +118,7 @@ export default {
     },
 
     handleAvatarSuccess(resp) {
-      this.form.icon = resp
+      this.form.icon = resp.data
     },
     beforeAvatarUpload(file) {
       const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';
